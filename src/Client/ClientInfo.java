@@ -14,21 +14,23 @@ public class ClientInfo extends HttpServlet {
         response.setContentType("text/html; charset=Big5");
         PrintWriter out = response.getWriter();
 
-        String name = request.getParameter("chkColor");
-        String name2 = new String(name.getBytes("ISO-8859-1"), "Big5");
-        String values[] = request.getParameterValues(name2);
+        String name[] = request.getParameterValues("chkColor");
+        //String name2 = new String(name.getBytes("ISO-8859-1"), "Big5");
+        // String values[] = request.getParameterValues(name2);
 
-        if (values != null) {
+        if (name != null) {
             out.println("<HTML>");
             out.println("<BODY>");
 
-            for (int i = 0; i < values.length ; i++) {
-                out.println("[" + i + "]" + values[i]+"<br/>");
+            for (int i = 0; i < name.length && name.length >= 3; i++) {
+                String name2 = new String(name[i].getBytes("ISO-8859-1"), "Big5");
+                out.println("[" + i + "]" + name2 + "<br/>");
             }
             out.println("</BODY>");
             out.println("</HTML>");
-        } else {
-            out.println(values);
+        } else if (name.length < 3 && name.length > 0) {
+            out.print("至少選三項!");
+        } else if (name==null) {
             out.print("空值!");
         }
 
